@@ -55,9 +55,9 @@ def create_order(amount=9):
     if razorpay_client is None:
         raise Exception("Razorpay client not initialized")
     order = razorpay_client.order.create({
-        "amount": amount * 900,  # Razorpay expects paise
+        "amount": amount * 100,  # Razorpay expects paise
         "currency": "INR",
-        "payment_capture": 9
+        "payment_capture": 1
     })
     return order
 
