@@ -252,21 +252,53 @@ def login_screen():
         email = st.text_input("Email Address")
         phone = st.text_input("Phone Number")
 
-        domain = st.selectbox("Select Your Domain", domains, format_func=lambda x: f"{x} - {domain_explanations.get(x, '')}")
-        tier = st.selectbox("Select Your Tier", tiers, format_func=lambda x: f"{x} - {tier_explanations.get(x, '')}")
+        domain = st.selectbox(
+            "Select Your Domain",
+            domains,
+            format_func=lambda x: f"{x} - {domain_explanations.get(x, '')}"
+        )
+        tier = st.selectbox(
+            "Select Your Tier",
+            tiers,
+            format_func=lambda x: f"{x} - {tier_explanations.get(x, '')}"
+        )
+
+        # 🔹 User Consent Section
+        st.markdown("### ✅ Data Usage & User Consent")
+        st.markdown(
+            """
+By proceeding, you acknowledge and agree that:
+
+- Your details (name, company, email, phone, selected domain and tier, and responses)
+  will be used to generate your AI Readiness Report.
+- Your data may be securely stored (e.g., in Google Sheets) for analytics, follow-ups,
+  and service improvement.
+- You may receive communication (including your report and related updates) on the
+  email address you provide.
+
+If you do not agree, please do not submit this form.
+            """
+        )
+
+        consent = st.checkbox("I have read and agree to the data usage and consent terms.")
 
         submitted = st.form_submit_button("Start Assessment")
 
         if submitted:
-            st.session_state.user_data = {
-                "Name": name,
-                "Company": company,
-                "Email": email,
-                "Phone": phone
-            }
-            st.session_state.selected_domain = domain
-            st.session_state.selected_tier = tier
-            st.session_state.page = "payment"
+            if not consent:
+                st.error("To proceed, you must agree to the data usage and consent terms.")
+            else:
+                st.session_state.user_data = {
+                    "Name": name,
+                    "Company": company,
+                    "Email": email,
+                    "Phone": phone,
+                    "Consent": True  # store consent flag
+                }
+                st.session_state.selected_domain = domain
+                st.session_state.selected_tier = tier
+                st.session_state.page = "payment"
+
 
 
 def question_screen():
