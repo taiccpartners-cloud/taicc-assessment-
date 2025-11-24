@@ -215,7 +215,7 @@ def payment_screen():
     """
     components.html(payment_html, height=650)
 
-    # Initialize session flags if not present
+    # Initialize session files if not present
     if "paid" not in st.session_state:
         st.session_state.paid = False
 
